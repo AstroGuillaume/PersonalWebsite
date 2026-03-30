@@ -440,8 +440,11 @@
       transition: color 0.2s, transform 0.2s;
     }
 
-    .project-card:hover .project-arrow { color: var(--accent); transform: translate(3px, -3px); }
-
+    .project-card:hover {
+      border-color: var(--border);           /* Keeps original border */
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
 
     .project-media {
       width: 100%;
@@ -771,8 +774,8 @@
         <div class="project-title">Solid Propellant Model Rocket</div>
         <div class="project-desc">Designed and built a KNO₃-propellant rocket with de Laval nozzle, SolidWorks-modelled components, GPS tracking, and automated parachute deployment via Arduino. Achieved 2nd place at the regional competition.</div>
         <div class="project-media">
-          <iframe
-            src="https://www.youtube.com/embed/KFnMKojpYFU"
+          <iframe 
+            src="https://www.youtube.com/embed/KFnMKojpYFU?rel=0&amp;modestbranding=1" 
             title="Solid Propellant Model Rocket video"
             loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
