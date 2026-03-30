@@ -434,8 +434,9 @@
     }
 
     .project-video-frame {
-      width: 100%;
-      aspect-ratio: 16 / 9;
+      width: min(420px, 100%);
+      aspect-ratio: 9 / 16;
+      margin: 0 auto;
       border-radius: 12px;
       overflow: hidden;
       border: 1px solid var(--border);
