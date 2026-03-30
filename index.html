@@ -34,7 +34,6 @@
       overflow-x: hidden;
     }
 
-    /* NOISE OVERLAY */
     body::before {
       content: '';
       position: fixed;
@@ -45,7 +44,6 @@
       opacity: 0.6;
     }
 
-    /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -85,7 +83,6 @@
 
     .nav-links a:hover { color: var(--text); }
 
-    /* HERO */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -167,31 +164,6 @@
       animation: fadeUp 0.8s 0.3s forwards;
     }
 
-    .hero-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.4s forwards;
-    }
-
-    .tag {
-      display: inline-block;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      padding: 0.3rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      background: var(--surface);
-    }
-
-    .tag.accent { border-color: rgba(91,141,232,0.4); color: var(--accent); }
-    .tag.accent2 { border-color: rgba(232,123,91,0.4); color: var(--accent2); }
-    .tag.accent3 { border-color: rgba(91,232,180,0.4); color: var(--accent3); }
-
     .hero-cta {
       display: flex;
       gap: 1rem;
@@ -228,7 +200,6 @@
     }
     .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
 
-    /* SECTIONS */
     section {
       max-width: 1100px;
       margin: 0 auto;
@@ -257,7 +228,6 @@
       margin: 0 3rem;
     }
 
-    /* ABOUT */
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -305,7 +275,6 @@
       letter-spacing: 0.06em;
     }
 
-    /* EXPERIENCE */
     .timeline {
       position: relative;
       padding-left: 1.5rem;
@@ -361,11 +330,11 @@
       line-height: 1.7;
     }
 
-    /* PROJECTS */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1.25rem;
+      align-items: stretch;
     }
 
     .project-card {
@@ -380,6 +349,7 @@
       transition: all 0.25s;
       position: relative;
       overflow: hidden;
+      min-height: 100%;
     }
 
     .project-card::before {
@@ -392,17 +362,11 @@
     }
 
     .project-card:hover {
-      border-color: rgba(91,141,232,0.35);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
     }
 
     .project-card:hover::before { opacity: 1; }
-
-    .project-icon {
-      font-size: 1.8rem;
-      line-height: 1;
-    }
 
     .project-title {
       font-size: 1rem;
@@ -440,12 +404,6 @@
       transition: color 0.2s, transform 0.2s;
     }
 
-    .project-card:hover {
-      border-color: var(--border);           /* Keeps original border */
-      transform: translateY(-4px);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-    }
-
     .project-media {
       width: 100%;
       border-radius: 10px;
@@ -462,7 +420,33 @@
       display: block;
     }
 
-    /* SKILLS */
+    .project-video-wide {
+      grid-column: 1 / -1;
+      padding: 2rem;
+    }
+
+    .project-video-wide .project-title {
+      font-size: 1.15rem;
+    }
+
+    .project-video-wide .project-desc {
+      max-width: 780px;
+    }
+
+    .project-video-frame {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #000;
+      box-shadow: 0 10px 36px rgba(0,0,0,0.28);
+    }
+
+    .project-half {
+      grid-column: span 1;
+    }
+
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -507,7 +491,6 @@
       line-height: 0;
     }
 
-    /* CONTACT */
     .contact-inner {
       background: var(--card);
       border: 1px solid var(--border);
@@ -551,7 +534,6 @@
       flex-wrap: wrap;
     }
 
-    /* FOOTER */
     footer {
       border-top: 1px solid var(--border);
       padding: 2rem 3rem;
@@ -565,7 +547,6 @@
       margin: 0 auto;
     }
 
-    /* ANIMATIONS */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -582,7 +563,17 @@
       transform: none;
     }
 
-    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .projects-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .project-video-wide,
+      .project-half {
+        grid-column: 1 / -1;
+      }
+    }
+
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
       .nav-links { gap: 1.2rem; }
@@ -591,14 +582,15 @@
       .hero { padding: 7rem 1.5rem 3rem; }
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .about-stats { grid-template-columns: 1fr 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-video-wide,
+      .project-half { grid-column: auto; }
       footer { flex-direction: column; gap: 0.75rem; text-align: center; }
       .contact-inner { padding: 2.5rem 1.5rem; }
     }
   </style>
 </head>
 <body>
-
-  <!-- NAV -->
   <nav>
     <a href="#" class="nav-logo">GR</a>
     <ul class="nav-links">
@@ -610,7 +602,6 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
   <div class="hero">
     <div class="hero-bg-orb orb1"></div>
     <div class="hero-bg-orb orb2"></div>
@@ -618,24 +609,16 @@
       <p class="hero-eyebrow">MASc Candidate · University of Toronto</p>
       <h1 class="hero-name">Guillaume<br /><em>Rodier</em></h1>
       <p class="hero-subtitle">Aerospace Engineering Candidate to the Profession (CPI) | Researching hydrogen combustion for aviation gas-turbine engines.</p>
-      
       <div class="hero-cta">
-          <a href="Guillaume_Rodier_CV_New_Version.pdf" 
-             target="_blank" 
-             class="btn btn-primary">
-              Download CV (PDF)
-          </a>
-          <a href="#projects" class="btn btn-primary" style="background: rgba(255,255,255,0.08);">
-              View Projects →
-          </a>
-          <a href="mailto:guillaumerodier0@gmail.com" class="btn btn-ghost">Get in touch</a>
+        <a href="Guillaume_Rodier_CV_New_Version.pdf" target="_blank" class="btn btn-primary">Download CV (PDF)</a>
+        <a href="#projects" class="btn btn-primary" style="background: rgba(255,255,255,0.08);">View Projects →</a>
+        <a href="mailto:guillaumerodier0@gmail.com" class="btn btn-ghost">Get in touch</a>
       </div>
     </div>
   </div>
 
   <hr class="section-divider" />
 
-  <!-- ABOUT -->
   <section id="about">
     <div class="reveal">
       <p class="section-label">01 · About</p>
@@ -648,88 +631,65 @@
         <p>Outside the lab I do triathlon, and will be competing at the World Triathlon Championship this fall (Pontevedra 2026, Olympic distance). When I’m not working, you’ll often find me outdoors, whether backcountry skiing in the winter or kitesurfing in the summer.</p>
       </div>
       <div class="about-stats">
-        <div class="stat-card">
-          <div class="stat-value">2026</div>
-          <div class="stat-label">World Tri Championship</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">Engineering</div>
-          <div class="stat-label">Aviation Research Focus</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">2×</div>
-          <div class="stat-label">Engineering Degrees</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">Hobbies</div>
-          <div class="stat-label">Hockey, Guitar, Triathlon, Backcountry Skiing, Kitesurfing</div>
-        </div>
+        <div class="stat-card"><div class="stat-value">2026</div><div class="stat-label">World Tri Championship</div></div>
+        <div class="stat-card"><div class="stat-value">Engineering</div><div class="stat-label">Aviation Research Focus</div></div>
+        <div class="stat-card"><div class="stat-value">2×</div><div class="stat-label">Engineering Degrees</div></div>
+        <div class="stat-card"><div class="stat-value">Hobbies</div><div class="stat-label">Hockey, Guitar, Triathlon, Backcountry Skiing, Kitesurfing</div></div>
       </div>
     </div>
   </section>
 
   <hr class="section-divider" />
 
-  <!-- EXPERIENCE -->
   <section id="experience">
     <div class="reveal">
       <p class="section-label">02 · Experience</p>
       <h2 class="section-title">Where I've worked<br />&amp; researched</h2>
     </div>
     <div class="timeline reveal">
-
       <div class="timeline-item">
         <div class="timeline-date">Sep 2024 – Present</div>
         <div class="timeline-role">MASc Candidate — Aerospace Engineering</div>
         <div class="timeline-org">University of Toronto · CFD & Propulsion Group · Supervised by Prof. Clinton Groth</div>
         <div class="timeline-desc">Simulating premixed hydrogen flames via LES/RANS + tabulated chemistry (FPI). Implementing a C++/Python correction within a Navier-Stokes PCM-FPI solver for preferential diffusion in H₂ combustion.</div>
       </div>
-
       <div class="timeline-item">
         <div class="timeline-date">Oct 2023 – Sep 2024</div>
         <div class="timeline-role">Student Researcher — Ophthalmology</div>
         <div class="timeline-org">Montreal Neurological Institute · Supervised by Dr. Leonard Levin</div>
         <div class="timeline-desc">Built a standalone pupillometer in C++ on embedded Linux (NVIDIA Jetson Nano) to detect relative afferent pupillary defects for neurological diagnosis in resource-limited environments, including combat zones.</div>
       </div>
-
       <div class="timeline-item">
         <div class="timeline-date">May 2024 – Sep 2024</div>
         <div class="timeline-role">Research in Virus Propagation</div>
         <div class="timeline-org">McGill University · Prof. Caroline Wagner's Lab</div>
         <div class="timeline-desc">Improved a humidity-controlled chamber and designed an automated droplet ejection system to study mucus droplet propagation under high-speed imaging, contributing to understanding airborne respiratory disease seasonality.</div>
       </div>
-
       <div class="timeline-item">
         <div class="timeline-date">May 2023 – Sep 2023</div>
         <div class="timeline-role">Product Engineering Intern</div>
         <div class="timeline-org">Rogue Research</div>
         <div class="timeline-desc">Generated and maintained QMS documentation (procedures, work instructions, quality controls) for Transcranial Magnetic Stimulation devices in alignment with ISO 13485 design control standards.</div>
       </div>
-
       <div class="timeline-item">
         <div class="timeline-date">Apr 2022 – Oct 2022</div>
         <div class="timeline-role">Mechanical Contractor</div>
         <div class="timeline-org">SAJB Industrial Automation</div>
         <div class="timeline-desc">Executed automation contracts for CHEP Canada and O-I Glass. Installed trapped-key interlock systems and deployed a Fanuc robot production line for box-insert formation.</div>
       </div>
-
     </div>
   </section>
 
   <hr class="section-divider" />
 
-    <!-- PROJECTS -->
   <section id="projects">
     <div class="reveal">
       <p class="section-label">03 · Projects</p>
       <h2 class="section-title">Things I've built</h2>
     </div>
-    
-    <div class="projects-grid">
 
-      <!-- Project 1 -->
+    <div class="projects-grid">
       <div class="project-card reveal">
-        <div class="project-icon"></div>
         <div class="project-title">H₂ Preferential Diffusion Correction</div>
         <div class="project-desc">C++/Python implementation within a Navier-Stokes PCM-FPI solver to accurately model preferential diffusion — a critical physical effect in lean premixed hydrogen combustion for aviation gas turbines.</div>
         <div class="project-tags">
@@ -741,9 +701,7 @@
         <div class="project-arrow">↗</div>
       </div>
 
-      <!-- Project 2 -->
       <div class="project-card reveal">
-        <div class="project-icon"></div>
         <div class="project-title">Standalone Pupillometer</div>
         <div class="project-desc">Field-deployable device on NVIDIA Jetson Nano for detecting relative afferent pupillary defects. Infrared illumination, Basler cameras, real-time C++ image processing, and SolidWorks enclosure optimized for 3D printing.</div>
         <div class="project-tags">
@@ -755,9 +713,7 @@
         <div class="project-arrow">↗</div>
       </div>
 
-      <!-- Project 3 -->
       <div class="project-card reveal">
-        <div class="project-icon"></div>
         <div class="project-title">Validation Jig for Total Knee Arthroplasty — Zimmer Biomet</div>
         <div class="project-desc">Capstone design for robot-assisted total knee arthroplasty requiring sub-millimeter accuracy. Built an optical infrared tracker jig to validate cutting-guide precision.</div>
         <div class="project-tags">
@@ -768,9 +724,30 @@
         <div class="project-arrow">↗</div>
       </div>
 
-      <!-- Project 4 -->
-      <div class="project-card reveal">
-        <div class="project-icon"></div>
+      <div class="project-card project-video-wide reveal">
+        <div class="project-title">Solid Propellant Model Rocket</div>
+        <div class="project-desc">Designed and built a KNO₃-propellant rocket with de Laval nozzle, SolidWorks-modelled components, GPS tracking, and automated parachute deployment via Arduino. Achieved 2nd place at the regional competition.</div>
+        <div class="project-video-frame">
+          <iframe
+            id="rocket-video"
+            data-base-src="https://www.youtube.com/embed/KFnMKojpYFU?rel=0&modestbranding=1&controls=1&playsinline=1&enablejsapi=1"
+            src="https://www.youtube.com/embed/KFnMKojpYFU?rel=0&modestbranding=1&controls=1&playsinline=1&enablejsapi=1"
+            title="Solid Propellant Model Rocket"
+            loading="eager"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="project-tags">
+          <span class="project-tag">SolidWorks</span>
+          <span class="project-tag">Arduino</span>
+          <span class="project-tag">Propulsion</span>
+          <span class="project-tag">Machining</span>
+        </div>
+      </div>
+
+      <div class="project-card project-half reveal">
         <div class="project-title">Mars Rover — McGill Robotics</div>
         <div class="project-desc">Designed a compact electrical enclosure for high-density thermal management of stacked PCBs in a sealed chassis. Developed a servo-actuated pan-tilt camera system for 360° navigation over simulated Martian terrain.</div>
         <div class="project-tags">
@@ -781,36 +758,7 @@
         <div class="project-arrow">↗</div>
       </div>
 
-      <!-- Rocket Project - CLEAN VERSION -->
-      <div class="project-card reveal">
-        <div class="project-icon"></div>
-        <div class="project-title">Solid Propellant Model Rocket</div>
-        <div class="project-desc">Designed and built a KNO₃-propellant rocket with de Laval nozzle, SolidWorks-modelled components, GPS tracking, and automated parachute deployment via Arduino. Achieved 2nd place at the regional competition.</div>
-        
-        <div class="project-media" style="aspect-ratio: 16 / 9; height: 460px; margin-bottom: 1.2rem;">
-            <iframe 
-                src="https://www.youtube.com/embed/KFnMKojpYFU?rel=0&amp;modestbranding=1&amp;controls=1&amp;showinfo=0&amp;fs=1"
-                title="Solid Propellant Model Rocket Launch"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen
-                style="width: 100%; height: 100%; border: none;">
-            </iframe>
-        </div>
-        
-        <div class="project-tags">
-            <span class="project-tag">SolidWorks</span>
-            <span class="project-tag">Arduino</span>
-            <span class="project-tag">Propulsion</span>
-            <span class="project-tag">Machining</span>
-        </div>
-        <div class="project-arrow">↗</div>
-      </div>
-
-      <!-- Project 6 -->
-      <div class="project-card reveal">
-        <div class="project-icon"></div>
+      <div class="project-card project-half reveal">
         <div class="project-title">Cancer Cell Classifier</div>
         <div class="project-desc">K-Means segmentation of cell types in medical microscopy image stacks in Python, HoG feature extraction, and an SVM classifier to identify cancerous cells within the segmented population.</div>
         <div class="project-tags">
@@ -821,79 +769,26 @@
         </div>
         <div class="project-arrow">↗</div>
       </div>
-
     </div>
   </section>
 
-  <!-- SKILLS -->
   <section id="skills">
     <div class="reveal">
       <p class="section-label">04 · Skills</p>
       <h2 class="section-title">Tools &amp; technologies</h2>
     </div>
     <div class="skills-grid reveal">
-      <div class="skill-group">
-        <div class="skill-group-title">Programming</div>
-        <ul class="skill-list">
-          <li>C++</li>
-          <li>Python</li>
-          <li>MATLAB / Simulink</li>
-          <li>Bash / Linux</li>
-          <li>Arduino</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-title">CFD & Simulation</div>
-        <ul class="skill-list">
-          <li>LES / RANS</li>
-          <li>Tabulated Chemistry (FPI)</li>
-          <li>Finite Volume Methods</li>
-          <li>Navier-Stokes Solvers</li>
-          <li>Tecplot 360</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-title">Embedded Systems</div>
-        <ul class="skill-list">
-          <li>NVIDIA Jetson Nano</li>
-          <li>Embedded Linux</li>
-          <li>Real-time Image Processing</li>
-          <li>Basler Cameras</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-title">Design & Fabrication</div>
-        <ul class="skill-list">
-          <li>SolidWorks / CAD</li>
-          <li>3D Printing</li>
-          <li>Lathe & Milling</li>
-          <li>Robotics (Fanuc)</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-title">ML & Bioinformatics</div>
-        <ul class="skill-list">
-          <li>Machine Learning</li>
-          <li>Medical Imaging</li>
-          <li>SVM / K-Means</li>
-          <li>Protein Structure Prediction</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-title">Tools & Standards</div>
-        <ul class="skill-list">
-          <li>Git / GitHub</li>
-          <li>LaTeX</li>
-          <li>ISO 13485 / QMS</li>
-          <li>NSERC USRA Recipient</li>
-        </ul>
-      </div>
+      <div class="skill-group"><div class="skill-group-title">Programming</div><ul class="skill-list"><li>C++</li><li>Python</li><li>MATLAB / Simulink</li><li>Bash / Linux</li><li>Arduino</li></ul></div>
+      <div class="skill-group"><div class="skill-group-title">CFD & Simulation</div><ul class="skill-list"><li>LES / RANS</li><li>Tabulated Chemistry (FPI)</li><li>Finite Volume Methods</li><li>Navier-Stokes Solvers</li><li>Tecplot 360</li></ul></div>
+      <div class="skill-group"><div class="skill-group-title">Embedded Systems</div><ul class="skill-list"><li>NVIDIA Jetson Nano</li><li>Embedded Linux</li><li>Real-time Image Processing</li><li>Basler Cameras</li></ul></div>
+      <div class="skill-group"><div class="skill-group-title">Design & Fabrication</div><ul class="skill-list"><li>SolidWorks / CAD</li><li>3D Printing</li><li>Lathe & Milling</li><li>Robotics (Fanuc)</li></ul></div>
+      <div class="skill-group"><div class="skill-group-title">ML & Bioinformatics</div><ul class="skill-list"><li>Machine Learning</li><li>Medical Imaging</li><li>SVM / K-Means</li><li>Protein Structure Prediction</li></ul></div>
+      <div class="skill-group"><div class="skill-group-title">Tools & Standards</div><ul class="skill-list"><li>Git / GitHub</li><li>LaTeX</li><li>ISO 13485 / QMS</li><li>NSERC USRA Recipient</li></ul></div>
     </div>
   </section>
 
   <hr class="section-divider" />
 
-  <!-- CONTACT -->
   <section id="contact">
     <div class="contact-inner reveal">
       <p class="section-label" style="margin-bottom:1rem;">05 · Contact</p>
@@ -913,7 +808,6 @@
   </footer>
 
   <script>
-    // Scroll reveal
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((e, i) => {
         if (e.isIntersecting) {
@@ -925,7 +819,6 @@
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Smooth nav highlight
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-links a');
 
@@ -938,6 +831,21 @@
         a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : '';
       });
     });
+
+    const rocketVideo = document.getElementById('rocket-video');
+    const rocketBaseSrc = rocketVideo.dataset.baseSrc;
+    let hasAutoplayed = false;
+
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !hasAutoplayed) {
+          rocketVideo.src = `${rocketBaseSrc}&autoplay=1&mute=1`;
+          hasAutoplayed = true;
+        }
+      });
+    }, { threshold: 0.6 });
+
+    videoObserver.observe(rocketVideo);
   </script>
 </body>
 </html>
