@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guillaume Rodier — Aerospace Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0f14;
+      --surface: #13161e;
+      --card: #181c27;
+      --border: rgba(255,255,255,0.07);
+      --text: #e8eaf0;
+      --muted: #8890a4;
+      --accent: #5b8de8;
+      --accent2: #e87b5b;
+      --accent3: #5be8b4;
+      --glow: rgba(91,141,232,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.6;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(13,15,20,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+
+    .orb1 {
+      width: 600px; height: 600px;
+      background: rgba(91,141,232,0.12);
+      top: -100px; right: -100px;
+      animation: float1 8s ease-in-out infinite;
+    }
+
+    .orb2 {
+      width: 400px; height: 400px;
+      background: rgba(91,232,180,0.07);
+      bottom: 0; left: -80px;
+      animation: float2 10s ease-in-out infinite;
+    }
+
+    @keyframes float1 {
+      0%, 100% { transform: translate(0,0); }
+      50% { transform: translate(-30px, 40px); }
+    }
+    @keyframes float2 {
+      0%, 100% { transform: translate(0,0); }
+      50% { transform: translate(20px, -30px); }
+    }
+
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.1s forwards;
+    }
+
+    .hero-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 560px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      padding: 0.3rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      background: var(--surface);
+    }
+
+    .tag.accent { border-color: rgba(91,141,232,0.4); color: var(--accent); }
+    .tag.accent2 { border-color: rgba(232,123,91,0.4); color: var(--accent2); }
+    .tag.accent3 { border-color: rgba(91,232,180,0.4); color: var(--accent3); }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.6rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: #7aaaf0; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(91,141,232,0.3); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+    /* SECTIONS */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 3rem;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      margin-bottom: 3rem;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 3rem;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    .about-text p strong { color: var(--text); font-weight: 500; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      transition: border-color 0.2s;
+    }
+
+    .stat-card:hover { border-color: rgba(91,141,232,0.3); }
+
+    .stat-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.06em;
+    }
+
+    /* EXPERIENCE */
+    .timeline {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 2.5rem 2rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -4.5px;
+      top: 6px;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px rgba(91,141,232,0.3);
+    }
+
+    .timeline-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-role {
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin-bottom: 0.15rem;
+    }
+
+    .timeline-org {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .timeline-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--glow), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .project-card:hover {
+      border-color: rgba(91,141,232,0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+
+    .project-card:hover::before { opacity: 1; }
+
+    .project-icon {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .project-title {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .project-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .project-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .project-arrow {
+      font-size: 0.8rem;
+      color: var(--muted);
+      align-self: flex-end;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .project-card:hover .project-arrow { color: var(--accent); transform: translate(3px, -3px); }
+
+
+    .project-media {
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      aspect-ratio: 16 / 9;
+    }
+
+    .project-media iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .skill-group {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem;
+    }
+
+    .skill-group-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.9rem;
+    }
+
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .skill-list li {
+      font-size: 0.85rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .skill-list li::before {
+      content: '·';
+      color: var(--accent);
+      font-size: 1.2rem;
+      line-height: 0;
+    }
+
+    /* CONTACT */
+    .contact-inner {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 3.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-inner::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: 50%;
+      transform: translateX(-50%);
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: rgba(91,141,232,0.08);
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .contact-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 1rem;
+    }
+
+    .contact-sub {
+      color: var(--muted);
+      font-size: 0.92rem;
+      max-width: 420px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      section { padding: 4rem 1.5rem; }
+      .section-divider { margin: 0 1.5rem; }
+      .hero { padding: 7rem 1.5rem 3rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+      .contact-inner { padding: 2.5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">GR</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg-orb orb1"></div>
+    <div class="hero-bg-orb orb2"></div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">MASc Candidate · University of Toronto</p>
+      <h1 class="hero-name">Guillaume<br /><em>Rodier</em></h1>
+      <p class="hero-subtitle">Aerospace engineer working at the intersection of CFD, hydrogen combustion, and embedded systems.</p>
+      
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View Projects →</a>
+        <a href="mailto:guillaumerodier0@gmail.com" class="btn btn-ghost">Get in touch</a>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider" />
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="reveal">
+      <p class="section-label">01 · About</p>
+      <h2 class="section-title">Building the future<br />of clean aviation</h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>I'm a <strong>dual-degree engineer</strong> — holding a BEng in Bioengineering from McGill (graduated with distinction) and currently completing my MASc in Aerospace Engineering at the University of Toronto.</p>
+        <p>My graduate research focuses on <strong>hydrogen combustion for aviation gas turbines</strong>, simulating premixed H₂ flames using LES/RANS coupled with tabulated chemistry (FPI). I'm implementing a C++/Python correction within a Navier-Stokes PCM-FPI solver to capture preferential diffusion — a critical physical effect in lean hydrogen combustion.</p>
+        <p>Outside the lab I'm a <strong>World Triathlon Championship qualifier</strong> (Pontevedra 2026, Olympic distance), training 11–14 hrs/week. I've played competitive ice hockey for 10 seasons and spent 10 years on classical guitar.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-value">2026</div>
+          <div class="stat-label">World Tri Championship</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">H₂</div>
+          <div class="stat-label">Aviation Research Focus</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">2×</div>
+          <div class="stat-label">Engineering Degrees</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">10+</div>
+          <div class="stat-label">Yrs Hockey & Guitar</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="reveal">
+      <p class="section-label">02 · Experience</p>
+      <h2 class="section-title">Where I've worked<br />&amp; researched</h2>
+    </div>
+    <div class="timeline reveal">
+
+      <div class="timeline-item">
+        <div class="timeline-date">Sep 2020 – Present</div>
+        <div class="timeline-role">MASc Candidate — Aerospace Engineering</div>
+        <div class="timeline-org">University of Toronto · CFD & Propulsion Group · Supervised by Prof. Clinton Groth</div>
+        <div class="timeline-desc">Simulating premixed hydrogen flames via LES/RANS + tabulated chemistry (FPI). Implementing a C++/Python correction within a Navier-Stokes PCM-FPI solver for preferential diffusion in lean H₂ combustion.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">Oct 2023 – Sep 2024</div>
+        <div class="timeline-role">Student Researcher — Ophthalmology</div>
+        <div class="timeline-org">Montreal Neurological Institute · Supervised by Dr. Leonard Levin</div>
+        <div class="timeline-desc">Built a standalone pupillometer in C++ on embedded Linux (NVIDIA Jetson Nano) to detect relative afferent pupillary defects for neurological diagnosis in resource-limited environments, including combat zones.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">May 2024 – Sep 2024</div>
+        <div class="timeline-role">NSERC USRA — Fluid Dynamics</div>
+        <div class="timeline-org">McGill University · Prof. Caroline Wagner's Lab</div>
+        <div class="timeline-desc">Improved a humidity-controlled chamber and designed an automated droplet ejection system to study mucus droplet propagation under high-speed imaging — contributing to understanding airborne respiratory disease seasonality.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">May 2023 – Sep 2023</div>
+        <div class="timeline-role">Product Engineering Intern</div>
+        <div class="timeline-org">Rogue Research</div>
+        <div class="timeline-desc">Generated and maintained QMS documentation (procedures, work instructions, quality controls) for Transcranial Magnetic Stimulation devices in full alignment with ISO 13485 design control standards.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">Apr 2022 – Oct 2022</div>
+        <div class="timeline-role">Mechanical Contractor</div>
+        <div class="timeline-org">SAJB Industrial Automation</div>
+        <div class="timeline-desc">Executed automation contracts for CHEP Canada and O-I Glass. Installed trapped-key interlock systems and deployed a Fanuc robot production line for box-insert formation, commissioned on-site with full functional testing.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="reveal">
+      <p class="section-label">03 · Projects</p>
+      <h2 class="section-title">Things I've built</h2>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-icon">🔥</div>
+        <div class="project-title">H₂ Preferential Diffusion Correction</div>
+        <div class="project-desc">C++/Python implementation within a Navier-Stokes PCM-FPI solver to accurately model preferential diffusion — a critical physical effect in lean premixed hydrogen combustion for aviation gas turbines.</div>
+        <div class="project-tags">
+          <span class="project-tag">C++</span>
+          <span class="project-tag">Python</span>
+          <span class="project-tag">LES/RANS</span>
+          <span class="project-tag">FPI</span>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-icon">👁️</div>
+        <div class="project-title">Standalone Pupillometer</div>
+        <div class="project-desc">Field-deployable device on NVIDIA Jetson Nano for detecting relative afferent pupillary defects. Infrared illumination, Basler cameras, real-time C++ image processing, and SolidWorks enclosure optimized for 3D printing.</div>
+        <div class="project-tags">
+          <span class="project-tag">C++</span>
+          <span class="project-tag">Embedded Linux</span>
+          <span class="project-tag">Jetson Nano</span>
+          <span class="project-tag">SolidWorks</span>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-icon">🦴</div>
+        <div class="project-title">TKA Validation Jig — Zimmer Biomet</div>
+        <div class="project-desc">Capstone design for robot-assisted total knee arthroplasty requiring sub-millimeter accuracy. Built an optical infrared tracker jig to validate cutting-guide precision, with full technical documentation and test protocols.</div>
+        <div class="project-tags">
+          <span class="project-tag">Mechanical Design</span>
+          <span class="project-tag">Optical Tracking</span>
+          <span class="project-tag">Validation</span>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-icon">🤖</div>
+        <div class="project-title">Mars Rover — McGill Robotics</div>
+        <div class="project-desc">Designed a compact electrical enclosure for high-density thermal management of stacked PCBs in a sealed chassis. Developed a servo-actuated pan-tilt camera system for 360° navigation over simulated Martian terrain.</div>
+        <div class="project-tags">
+          <span class="project-tag">Mechanical Design</span>
+          <span class="project-tag">Thermal Management</span>
+          <span class="project-tag">Robotics</span>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-icon">🚀</div>
+        <div class="project-title">Solid Propellant Model Rocket</div>
+        <div class="project-desc">Designed and built a KNO₃-propellant rocket with de Laval nozzle, SolidWorks-modelled components, GPS tracking, and automated parachute deployment via Arduino. Achieved 2nd place at the regional competition.</div>
+        <div class="project-media">
+          <iframe
+            src="https://www.youtube.com/embed/KFnMKojpYFU"
+            title="Solid Propellant Model Rocket video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="project-tags">
+          <span class="project-tag">SolidWorks</span>
+          <span class="project-tag">Arduino</span>
+          <span class="project-tag">Propulsion</span>
+          <span class="project-tag">Machining</span>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-icon">🧬</div>
+        <div class="project-title">Cancer Cell Classifier</div>
+        <div class="project-desc">K-Means segmentation of cell types in medical microscopy image stacks in Python, HoG feature extraction, and an SVM classifier to identify cancerous cells within the segmented population.</div>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">ML</span>
+          <span class="project-tag">SVM</span>
+          <span class="project-tag">Computer Vision</span>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="reveal">
+      <p class="section-label">04 · Skills</p>
+      <h2 class="section-title">Tools &amp; technologies</h2>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="skill-group">
+        <div class="skill-group-title">Programming</div>
+        <ul class="skill-list">
+          <li>C++</li>
+          <li>Python</li>
+          <li>MATLAB / Simulink</li>
+          <li>Bash / Linux</li>
+          <li>Arduino</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">CFD & Simulation</div>
+        <ul class="skill-list">
+          <li>LES / RANS</li>
+          <li>Tabulated Chemistry (FPI)</li>
+          <li>Finite Volume Methods</li>
+          <li>Navier-Stokes Solvers</li>
+          <li>Tecplot 360</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Embedded Systems</div>
+        <ul class="skill-list">
+          <li>NVIDIA Jetson Nano</li>
+          <li>Embedded Linux</li>
+          <li>Real-time Image Processing</li>
+          <li>Basler Cameras</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Design & Fabrication</div>
+        <ul class="skill-list">
+          <li>SolidWorks / CAD</li>
+          <li>3D Printing</li>
+          <li>Lathe & Milling</li>
+          <li>Robotics (Fanuc)</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">ML & Bioinformatics</div>
+        <ul class="skill-list">
+          <li>Machine Learning</li>
+          <li>Medical Imaging</li>
+          <li>SVM / K-Means</li>
+          <li>Protein Structure Prediction</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Tools & Standards</div>
+        <ul class="skill-list">
+          <li>Git / GitHub</li>
+          <li>LaTeX</li>
+          <li>ISO 13485 / QMS</li>
+          <li>NSERC USRA Recipient</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner reveal">
+      <p class="section-label" style="margin-bottom:1rem;">05 · Contact</p>
+      <h2 class="contact-title">Let's connect</h2>
+      <p class="contact-sub">Whether it's research collaboration, internship opportunities, or just a conversation about H₂ combustion — reach out.</p>
+      <div class="contact-links">
+        <a href="mailto:guillaumerodier0@gmail.com" class="btn btn-primary">guillaumerodier0@gmail.com</a>
+        <a href="https://linkedin.com/in/AstroGuillaume" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
+        <a href="https://github.com/AstroGuillaume" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Guillaume Rodier · Toronto, ON</span>
+    <span>(+1) 514-952-3221</span>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          e.target.style.transitionDelay = `${i * 0.07}s`;
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth nav highlight
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 200) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : '';
+      });
+    });
+  </script>
+</body>
+</html>
