@@ -123,9 +123,20 @@
     }
 
     .hero-inner {
-      max-width: 1100px;
+      max-width: 1220px;
       margin: 0 auto;
       width: 100%;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .hero-copy {
+      min-width: 0;
     }
 
     .hero-eyebrow {
@@ -172,6 +183,126 @@
       animation: fadeUp 0.8s 0.5s forwards;
     }
 
+    .hero-slider-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      justify-self: end;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.35s forwards;
+    }
+
+    .hero-slider-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -18px;
+      background: radial-gradient(circle at center, rgba(91,141,232,0.18), transparent 72%);
+      filter: blur(28px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero-slider {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+      box-shadow:
+        0 22px 70px rgba(0,0,0,0.42),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-slide-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.9s cubic-bezier(0.77, 0, 0.18, 1);
+      will-change: transform;
+    }
+
+    .hero-slide {
+      min-width: 100%;
+      height: 100%;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .hero-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-slide::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8,10,15,0.42), rgba(8,10,15,0.04) 42%);
+      pointer-events: none;
+    }
+
+    .hero-slider-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      z-index: 3;
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(10,12,18,0.45);
+      color: rgba(255,255,255,0.82);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-slider-footer {
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-slider-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.84);
+    }
+
+    .hero-slider-dots {
+      display: flex;
+      gap: 0.45rem;
+      align-items: center;
+    }
+
+    .hero-slider-dots span {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .hero-slider-dots span.active {
+      width: 22px;
+      background: rgba(255,255,255,0.88);
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -191,14 +322,24 @@
       background: var(--accent);
       color: #fff;
     }
-    .btn-primary:hover { background: #7aaaf0; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(91,141,232,0.3); }
+
+    .btn-primary:hover {
+      background: #7aaaf0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(91,141,232,0.3);
+    }
 
     .btn-ghost {
       background: transparent;
       color: var(--muted);
       border: 1px solid var(--border);
     }
-    .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+    .btn-ghost:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
 
     section {
       max-width: 1100px;
@@ -404,22 +545,6 @@
       transition: color 0.2s, transform 0.2s;
     }
 
-    .project-media {
-      width: 100%;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.02);
-      aspect-ratio: 16 / 9;
-    }
-
-    .project-media iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      display: block;
-    }
-
     .project-video-wide {
       grid-column: 1 / -1;
       padding: 2rem;
@@ -443,7 +568,7 @@
       box-shadow: 0 10px 36px rgba(0,0,0,0.28);
       position: relative;
     }
-    
+
     .project-video-frame iframe {
       position: absolute;
       top: 50%;
@@ -574,6 +699,18 @@
       transform: none;
     }
 
+    @media (max-width: 980px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .hero-slider-wrap {
+        justify-self: start;
+        max-width: 380px;
+      }
+    }
+
     @media (max-width: 900px) {
       .projects-grid {
         grid-template-columns: 1fr 1fr;
@@ -598,6 +735,10 @@
       .project-half { grid-column: auto; }
       footer { flex-direction: column; gap: 0.75rem; text-align: center; }
       .contact-inner { padding: 2.5rem 1.5rem; }
+
+      .hero-slider-wrap {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
@@ -617,13 +758,28 @@
     <div class="hero-bg-orb orb1"></div>
     <div class="hero-bg-orb orb2"></div>
     <div class="hero-inner">
-      <p class="hero-eyebrow">MASc Candidate · University of Toronto</p>
-      <h1 class="hero-name">Guillaume<br /><em>Rodier</em></h1>
-      <p class="hero-subtitle">Aerospace Engineering Candidate to the Profession (CPI) | Researching hydrogen combustion for aviation gas-turbine engines.</p>
-      <div class="hero-cta">
-        <a href="Guillaume_Rodier_CV_New_Version.pdf" target="_blank" class="btn btn-primary">Download CV (PDF)</a>
-        <a href="#projects" class="btn btn-primary" style="background: rgba(255,255,255,0.08);">View Projects →</a>
-        <a href="mailto:guillaumerodier0@gmail.com" class="btn btn-ghost">Get in touch</a>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="hero-eyebrow">MASc Candidate · University of Toronto</p>
+          <h1 class="hero-name">Guillaume<br /><em>Rodier</em></h1>
+          <p class="hero-subtitle">Aerospace Engineering Candidate to the Profession (CPI) | Researching hydrogen combustion for aviation gas-turbine engines.</p>
+          <div class="hero-cta">
+            <a href="Guillaume_Rodier_CV_New_Version.pdf" target="_blank" class="btn btn-primary">Download CV (PDF)</a>
+            <a href="#projects" class="btn btn-primary" style="background: rgba(255,255,255,0.08);">View Projects →</a>
+            <a href="mailto:guillaumerodier0@gmail.com" class="btn btn-ghost">Get in touch</a>
+          </div>
+        </div>
+
+        <div class="hero-slider-wrap">
+          <div class="hero-slider" id="hero-slider">
+            <div class="hero-slider-badge">Gallery</div>
+            <div class="hero-slide-track" id="hero-slide-track"></div>
+            <div class="hero-slider-footer">
+              <span class="hero-slider-label">Personal Highlights</span>
+              <div class="hero-slider-dots" id="hero-slider-dots"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -856,6 +1012,58 @@
     }, { threshold: 0.6 });
 
     videoObserver.observe(rocketVideo);
+
+    const galleryImages = [
+      "https://raw.githubusercontent.com/AstroGuillaume/YOUR-REPO-NAME/main/pictures/photo1.jpg",
+      "https://raw.githubusercontent.com/AstroGuillaume/YOUR-REPO-NAME/main/pictures/photo2.jpg",
+      "https://raw.githubusercontent.com/AstroGuillaume/YOUR-REPO-NAME/main/pictures/photo3.jpg",
+      "https://raw.githubusercontent.com/AstroGuillaume/YOUR-REPO-NAME/main/pictures/photo4.jpg"
+    ];
+
+    const slideTrack = document.getElementById('hero-slide-track');
+    const dotsContainer = document.getElementById('hero-slider-dots');
+
+    let currentSlide = 0;
+    let slideInterval;
+
+    function buildSlider(images) {
+      slideTrack.innerHTML = '';
+      dotsContainer.innerHTML = '';
+
+      images.forEach((src, index) => {
+        const slide = document.createElement('div');
+        slide.className = 'hero-slide';
+
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `Gallery image ${index + 1}`;
+
+        slide.appendChild(img);
+        slideTrack.appendChild(slide);
+
+        const dot = document.createElement('span');
+        if (index === 0) dot.classList.add('active');
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    function updateSlider() {
+      slideTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+      [...dotsContainer.children].forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+    }
+
+    function startSlider() {
+      slideInterval = setInterval(() => {
+        currentSlide = (currentSlide + 1) % galleryImages.length;
+        updateSlider();
+      }, 3500);
+    }
+
+    buildSlider(galleryImages);
+    updateSlider();
+    startSlider();
   </script>
 </body>
 </html>
